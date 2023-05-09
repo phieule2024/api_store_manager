@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\Product;
+use Auth;
 
-class StoreController extends Controller
+class StoreController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +17,18 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
-        $stores = Store::where('name', 'like', "%{$request->search}%")
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        try {
+            $stores = Store::where('name', 'like', "%{$request->search}%")
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
 
-        return response()->json($stores);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $stores,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -30,19 +38,23 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $store = new Store;
-        $store->name = $validatedData['name'];
-        $store->save();
+            $store = new Store;
+            $store->name = $validatedData['name'];
+            $store->created_by = Auth::id();
+            $store->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Store created successfully',
-            'data' => $store
-        ], 201);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $store,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -53,8 +65,15 @@ class StoreController extends Controller
      */
     public function show($id)
     {
-        $store = Store::findOrFail($id);
-        return response()->json($store);
+        try {
+            $store = Store::findOrFail($id);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $store,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -66,19 +85,22 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $store = Store::findOrFail($id);
-        $store->name = $validatedData['name'];
-        $store->save();
+            $store = Store::findOrFail($id);
+            $store->name = $validatedData['name'];
+            $store->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Store updated successfully',
-            'data' => $store
-        ], 200);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $store,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -89,13 +111,17 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        $store = Store::findOrFail($id);
-        if($store->delete()){
-            Product::where('store_id', $id)->delete();
+        try {
+            $store = Store::findOrFail($id);
+            if ($store->delete()) {
+                Product::where('store_id', $id)->delete();
+            }
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $store,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
         }
-        return response()->json([
-            'success' => true,
-            'message' => 'Store deleted successfully'
-        ], 200);
     }
 }

@@ -6,20 +6,28 @@ use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $storeId)
     {
-        $product =  Product::where('name', 'like', "%{$request->search}%")
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        try {
+            $product =  Product::where('name', 'like', "%{$request->search}%")
+                ->where('store_id', $storeId)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
 
-        return response()->json($product);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $product,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -30,29 +38,25 @@ class ProductController extends Controller
      */
     public function store(Request $request, $storeId)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $store = Store::findOrFail($storeId);
-        if($store == null){
-            return response()->json([
-                'success' => false,
-                'message' => 'Store not found',
-                'data' => []
-            ], 400);
+            $store = Store::findOrFail($storeId);
+
+            $product = new Product;
+            $product->name = $validatedData['name'];
+            $product->store_id = $storeId;
+            $product->save();
+
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $product,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
         }
-
-        $product = new Product;
-        $product->name = $validatedData['name'];
-        $product->store_id = $storeId;
-        $product->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Product created successfully',
-            'data' => $product
-        ], 201);
     }
 
     /**
@@ -61,10 +65,18 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($storeId, $id)
     {
-        $product = Product::findOrFail($id);
-        return response()->json($product);
+        try {
+            $store = Store::findOrFail($storeId);
+            $product = $store->products()->findOrFail($id);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $product,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -76,20 +88,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, $storeId, $productId)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-        $store = Store::findOrFail($storeId);
-        $product = $store->products()->findOrFail($productId);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+            $store = Store::findOrFail($storeId);
+            $product = $store->products()->findOrFail($productId);
 
-        $product->name = $validatedData['name'];
-        $product->save();
+            $product->name = $validatedData['name'];
+            $product->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Product updated successfully',
-            'data' => $product
-        ], 200);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $product,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -100,13 +115,17 @@ class ProductController extends Controller
      */
     public function destroy($storeId, $id)
     {
-        $store = Store::findOrFail($storeId);
-        $product = $store->products()->findOrFail($id);
-        $product->delete();
+        try {
+            $store = Store::findOrFail($storeId);
+            $product = $store->products()->findOrFail($id);
+            $product->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Product deleted successfully'
-        ], 200);
+            return $this->returnResult([
+                "error" => 0,
+                "data" => $product,
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJson(CODE_ERROR, $e->getMessage());
+        }
     }
 }
