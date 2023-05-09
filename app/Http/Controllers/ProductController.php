@@ -79,7 +79,6 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
-
         $store = Store::findOrFail($storeId);
         $product = $store->products()->findOrFail($productId);
 
@@ -99,11 +98,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($storeId, $id)
     {
-        $store = Store::findOrFail($id);
+        $store = Store::findOrFail($storeId);
         $product = $store->products()->findOrFail($id);
-
         $product->delete();
 
         return response()->json([

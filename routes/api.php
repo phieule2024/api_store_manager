@@ -25,6 +25,6 @@ Route::middleware('api.auth')->group(function () {
     Route::get('stores/{store_id}/products', [ProductController::class, 'index'])->name('products');
     Route::post('stores/{store_id}/products/create', [ProductController::class, 'store'])->name('products.create');
     Route::put('stores/{store_id}/products/{id}', [ProductController::class, 'update'])->name('products.update');
-    Route::put('stores/{store_id}/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
+    Route::delete('stores/{store_id}/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
 });
 Route::post('login', [AuthController::class, 'login'])->name('login');

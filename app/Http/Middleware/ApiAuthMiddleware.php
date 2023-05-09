@@ -17,15 +17,15 @@ class ApiAuthMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // if (! $request->header('Authorization')) {
-        //     return response()->json(['message' => 'Unauthorized'], 401);
-        // }
+        if (! $request->header('Authorization')) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        // $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        // if (! $user = User::where('api_token', $token)->first()) {
-        //     return response()->json(['message' => 'Unauthorized'], 401);
-        // }
-        // Auth::login($user);
+        $token = str_replace('Bearer ', '', $request->header('Authorization'));
+        if (! $user = User::where('api_token', $token)->first()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        Auth::login($user);
 
         return $next($request);
     }
