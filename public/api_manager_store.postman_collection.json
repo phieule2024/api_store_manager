@@ -3,7 +3,8 @@
 		"_postman_id": "4fe9d355-82a7-4e83-97cc-6c51af3d9ebf",
 		"name": "api_manager_store",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "15270907"
+		"_exporter_id": "15270907",
+		"_collection_link": "https://www.postman.com/orange-shadow-313239/workspace/new-team-workspace/collection/15270907-4fe9d355-82a7-4e83-97cc-6c51af3d9ebf?action=share&creator=15270907&source=collection_link"
 	},
 	"item": [
 		{
@@ -24,17 +25,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/login",
-							"protocol": "http",
+							"raw": "{{api-8k}}/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"login"
 							]
 						}
@@ -47,7 +42,48 @@
 			"name": "products",
 			"item": [
 				{
-					"name": "list",
+					"name": "list product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "EYm2F0JWbSHIbmNnKIyzpOdT2ilRN1fmK9JLoqHB6UHQ70kjgLYWDeuSF1rQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"search\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-8k}}/stores/3/products",
+							"host": [
+								"{{api-8k}}"
+							],
+							"path": [
+								"stores",
+								"3",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show product",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -74,33 +110,28 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/1/products",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/3/products/21",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores",
-								"1",
-								"products"
+								"3",
+								"products",
+								"21"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "add",
+					"name": "add product",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"product 1\"\r\n}",
+							"raw": "{\r\n    \"name\" : \"product 222\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -108,17 +139,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/3/products/create",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/3/products/create",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores",
 								"3",
 								"products",
@@ -129,13 +154,23 @@
 					"response": []
 				},
 				{
-					"name": "update",
+					"name": "update product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "M0suYX8faWjetmE2X9MoaNvF9qhgetsTNMXvGnhtdNBEz20cdCeVcF4zb9TX",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"22\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Product 21\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -143,28 +178,22 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/3/products/17",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/3/products/21",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores",
 								"3",
 								"products",
-								"17"
+								"21"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "delete",
+					"name": "delete product",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -188,21 +217,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/3/products/17",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/3/products/21",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores",
 								"3",
 								"products",
-								"17"
+								"21"
 							]
 						}
 					},
@@ -214,7 +237,7 @@
 			"name": "stores",
 			"item": [
 				{
-					"name": "list",
+					"name": "list stores",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -241,17 +264,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores"
 							]
 						}
@@ -259,13 +276,26 @@
 					"response": []
 				},
 				{
-					"name": "add",
+					"name": "show store",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "EYm2F0JWbSHIbmNnKIyzpOdT2ilRN1fmK9JLoqHB6UHQ70kjgLYWDeuSF1rQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"Store 1\"\r\n}",
+							"raw": "{\r\n    \"search\": \"Store\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -273,17 +303,48 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/create",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/5",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
+								"stores",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "M0suYX8faWjetmE2X9MoaNvF9qhgetsTNMXvGnhtdNBEz20cdCeVcF4zb9TX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Store 223\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-8k}}/stores/create",
+							"host": [
+								"{{api-8k}}"
+							],
+							"path": [
 								"stores",
 								"create"
 							]
@@ -292,13 +353,13 @@
 					"response": []
 				},
 				{
-					"name": "update",
+					"name": "update store",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Store 12\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Store 12222\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -306,26 +367,20 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/1",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/5",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores",
-								"1"
+								"5"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "delete",
+					"name": "delete store",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -339,25 +394,23 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/stores/1",
-							"protocol": "http",
+							"raw": "{{api-8k}}/stores/5",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{api-8k}}"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"stores",
-								"1"
+								"5"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "user",
+			"item": []
 		}
 	]
 }
